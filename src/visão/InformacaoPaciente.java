@@ -13,6 +13,7 @@ import Util.ValidarCpf;
 import DAO.ComboBoxStatusDAO;
 import DAO.PacienteDAO;
 import java.util.List;
+import Util.WebServiceCep;
 
 
 public class InformacaoPaciente extends javax.swing.JInternalFrame {
@@ -59,7 +60,7 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
          txtCidade.setText(id);
          txtTelefone.setText(Long.toString(paciente.getTelefone()));
          txtEmail.setText(paciente.getEmail());
-         comboBoxStatus.setSelectedIndex(comboStatus.encontraStatusPaciente(lista, paciente));         
+         comboBoxStatus.setSelectedIndex(comboStatus.encontraStatusPaciente(lista, paciente));  
          txtNome.setText(paciente.getNome());
          jDataNasci.setDate(paciente.getDatanasci());
          comboBoxSexo.setSelectedItem(paciente.getSexo());
@@ -146,7 +147,7 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
         jPanel1.add(txtIdade);
         txtIdade.setBounds(480, 30, 48, 20);
 
-        comboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Homem", "Mulher" }));
+        comboBoxSexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "HOMEM", "MULHER" }));
         jPanel1.add(comboBoxSexo);
         comboBoxSexo.setBounds(350, 30, 103, 20);
 
@@ -202,6 +203,11 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/procurar.png"))); // NOI18N
         jButton1.setToolTipText("Pesquisa CEP");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         try {
             txtCEP.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
@@ -331,7 +337,7 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
             }
         });
 
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/salvar.jpg"))); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/newsalvar.png"))); // NOI18N
         btnSalvar.setToolTipText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -529,6 +535,34 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+          
+        WebServiceCep webServiceCep = WebServiceCep.searchCep(txtCEP.getText());
+        //A ferramenta de busca ignora qualquer caracter que n?o seja n?mero.
+
+        //caso a busca ocorra bem, imprime os resultados.
+        if (webServiceCep.wasSuccessful()) {
+            txtRua.setText(webServiceCep.getLogradouroFull());
+            txtCidade.setText(webServiceCep.getCidade());
+            txtBairro.setText(webServiceCep.getBairro());
+            //setSelectedItem(webServiceCep.getUf());
+            //System.out.println("Cep: " + webServiceCep.getCep());
+            //System.out.println("Logradouro: " + webServiceCep.getLogradouroFull());
+            //System.out.println("Bairro: " + webServiceCep.getBairro());
+            //System.out.println("Cidade: "
+                    //+ webServiceCep.getCidade() + "/" + webServiceCep.getUf());
+
+            //caso haja problemas imprime as exce??es.
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro numero: " + webServiceCep.getResulCode());
+
+            JOptionPane.showMessageDialog(null, "Descrição do erro: " + webServiceCep.getResultText());
+        }
+    
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

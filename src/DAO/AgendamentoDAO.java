@@ -1,9 +1,16 @@
 
 package DAO;
 
+import Util.Tabela;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import modelo.AgendamentoDTO;
 import modelo.DentistaDTO;
@@ -16,6 +23,8 @@ public class AgendamentoDAO {
     PacienteDTO paciente = new PacienteDTO();
     DentistaDTO dentista = new DentistaDTO();
     AgendamentoDTO agendamento = new AgendamentoDTO();
+    Tabela tabela = new Tabela();
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
     
     public void salvar(AgendamentoDTO agendamento){
         conex.conexao();
@@ -73,7 +82,7 @@ public class AgendamentoDAO {
     }
     
     
-   public PacienteDTO selecionarAgendamento (AgendamentoDTO agendamento){
+   public AgendamentoDTO selecionarAgendamento (AgendamentoDTO agendamento){
             
             conex.conexao();
             conex.executaSQL("select * from agendamento where id ="+agendamento.getCodigo());
@@ -82,26 +91,107 @@ public class AgendamentoDAO {
                 
             conex.rs.first();
                            
-                paciente.setIdade(conex.rs.getInt("idade"));
-                paciente.setSexo(conex.rs.getString("sexo"));               
-                paciente.setCpf(conex.rs.getLong("cpf"));
-                paciente.setRua(conex.rs.getString("rua"));
-                paciente.setBairro(conex.rs.getString("bairro"));
-                paciente.setNumero(conex.rs.getInt("numero"));
-                paciente.setCep(conex.rs.getLong("cep"));
-                paciente.setCidade(conex.rs.getString("cidade"));
-                paciente.setTelefone(conex.rs.getLong("telefone"));
-                paciente.setEmail(conex.rs.getString("email"));
-                paciente.setDataNasci(conex.rs.getDate("datanasci"));
-                paciente.setStatus(conex.rs.getInt("id_status"));
-                paciente.setNome(conex.rs.getString("nome"));
 
+                agendamento.setCodigo(conex.rs.getInt("id"));
+                agendamento.setCodigoDentista(conex.rs.getInt("id_medico"));
+                agendamento.setCodigoPaciente(conex.rs.getInt("id_paciente"));
+                agendamento.setData(conex.rs.getDate("data"));
+                agendamento.setId_status(conex.rs.getInt("id_status"));
+                agendamento.setHora(conex.rs.getString("hora"));
+                agendamento.setServico(conex.rs.getString("servico"));
+    
                 }
                     catch(SQLException ex){
-                          JOptionPane.showMessageDialog(null, "Erro para encontrar o paciente selecionado"+ex);
+                          JOptionPane.showMessageDialog(null, "Erro para encontrar o agendamento selecionado"+ex);
                             }
             conex.desconeca();
-            return paciente;
+            return agendamento;
         }
+   
+   public Tabela listarAgendamentos(String codigo, String nome, int status, boolean pessoa, String data) {
+       
+        ArrayList dados = new ArrayList();
+        String[] colunas = new String[]{"Agendamento Nº", "Codigo", "nome", "data", "hora", "servico"};
+
+        conex.conexao();
+
+        String sql;
+
+        boolean valida = false;
+        boolean medico = true;
+        
+        if (pessoa == true) {
+            sql = "select * from agendamento inner join medicos on id_medico = medicos.id"; 
+            }
+                else {
+                sql = "select * from agendamento inner join paciente on id_paciente = paciente.id ";
+                valida = true;
+                medico = false;
+            }
+ 
+        if (codigo != null && !codigo.equals("")) {
+            if(valida){
+                if(medico){
+                   sql += " and medicos.id = " + codigo; 
+                }else{
+                    sql += " and paciente.id = " + codigo;
+                }
+                
+            }else{
+                if(medico){
+                    sql += " where medicos.id = " + codigo;
+                    valida = true;                
+                }else{
+                    sql += " where paciente.id = " + codigo;
+                    valida = true;  
+                } 
+            }
+        }
+        
+        if (nome != null && !nome.equals("")) {
+            if(valida){
+                if(medico){
+                   sql += " and medicos.nome like'%" + nome + "%'"; 
+                }else{
+                    sql += " and paciente.nome like'%" + nome + "%'"; 
+                }
+                
+            }else{
+                if(medico){
+                    sql += " where medicos.nome like'%" + nome + "%'"; 
+                    valida = true;                
+                }else{
+                    sql += " where paciente.nome like'%" + nome + "%'"; 
+                    valida = true;  
+                } 
+            } 
+        }
+        
+        sql += " order by data";
+        
+        conex.executaSQL(sql);
+
+        try {
+            conex.rs.first();
+
+            do {
+                if (medico){
+                        dados.add((new Object[]{conex.rs.getInt("id"), conex.rs.getInt("medicos.id"), conex.rs.getString("medicos.nome"), dateFormat.format(conex.rs.getDate("data")), conex.rs.getString("hora"), conex.rs.getString("servico")}));
+                }else{
+                    dados.add((new Object[]{conex.rs.getInt("id"), conex.rs.getInt("paciente.id"), conex.rs.getString("paciente.nome"), dateFormat.format(conex.rs.getDate("data")), conex.rs.getString("hora"), conex.rs.getString("servico")}));
+                }
+                
+            } while (conex.rs.next());
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Nenhum cadastro encontrado");
+        }
+
+        tabela.setLinhas(dados);
+        tabela.setColunas(colunas);
+        conex.desconeca();
+
+        return tabela;
+    }
     
 }

@@ -13,6 +13,7 @@ import DAO.DentistaDAO;
 import modelo.StatusDTO;
 import javax.swing.DefaultComboBoxModel;
 import Util.ValidarCpf;
+import Util.WebServiceCep;
 import java.util.List;
 import modelo.EspecialidadeDTO;
 
@@ -37,8 +38,7 @@ public class InformacaoDentista extends javax.swing.JInternalFrame {
         listaEspecialidade = comboBoxEspecialidadeDAO.carregaComboEspecialidade();
         DefaultComboBoxModel defaultComboBoxEspecialidade = new DefaultComboBoxModel(listaEspecialidade.toArray());
         comboBoxEspecialidade.setModel(defaultComboBoxEspecialidade);
-        comboBoxEspecialidade.addItem("");
-        comboBoxEspecialidade.setSelectedItem("");
+        comboBoxEspecialidade.setSelectedItem(null);
         
         txtIdade.setDocument(new FormataNumeros());
         txtCrm.setDocument(new FormataNumeros());
@@ -157,7 +157,6 @@ public class InformacaoDentista extends javax.swing.JInternalFrame {
         jPanel1.add(jLabel4);
         jLabel4.setBounds(0, 130, 71, 14);
 
-        comboBoxEspecialidade.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Cirurgião", "Anestesista", "teste" }));
         jPanel1.add(comboBoxEspecialidade);
         comboBoxEspecialidade.setBounds(0, 150, 130, 20);
 
@@ -229,6 +228,11 @@ public class InformacaoDentista extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/procurar.png"))); // NOI18N
         jButton1.setToolTipText("Pesquisa CEP");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         try {
             txtCEP.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
@@ -361,7 +365,7 @@ public class InformacaoDentista extends javax.swing.JInternalFrame {
             }
         });
 
-        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/salvar.jpg"))); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/newsalvar.png"))); // NOI18N
         btnSalvar.setToolTipText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -410,7 +414,7 @@ public class InformacaoDentista extends javax.swing.JInternalFrame {
                 //comboBoxEspecialidade.setBackground(Color.yellow)
                 }
                 
-                else if(comboBoxSexo.getSelectedIndex()==0) {
+                else if(comboBoxSexo.getSelectedItem()==null) {
                     JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
                     comboBoxSexo.requestFocus();                      
                         } 
@@ -547,6 +551,30 @@ public class InformacaoDentista extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         WebServiceCep webServiceCep = WebServiceCep.searchCep(txtCEP.getText());
+        //A ferramenta de busca ignora qualquer caracter que n?o seja n?mero.
+
+        //caso a busca ocorra bem, imprime os resultados.
+        if (webServiceCep.wasSuccessful()) {
+            txtRua.setText(webServiceCep.getLogradouroFull());
+            txtCidade.setText(webServiceCep.getCidade());
+            txtBairro.setText(webServiceCep.getBairro());
+            //setSelectedItem(webServiceCep.getUf());
+            //System.out.println("Cep: " + webServiceCep.getCep());
+            //System.out.println("Logradouro: " + webServiceCep.getLogradouroFull());
+            //System.out.println("Bairro: " + webServiceCep.getBairro());
+            //System.out.println("Cidade: "
+                    //+ webServiceCep.getCidade() + "/" + webServiceCep.getUf());
+
+            //caso haja problemas imprime as exce??es.
+        } else {
+            JOptionPane.showMessageDialog(null, "Erro numero: " + webServiceCep.getResulCode());
+
+            JOptionPane.showMessageDialog(null, "Descrição do erro: " + webServiceCep.getResultText());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

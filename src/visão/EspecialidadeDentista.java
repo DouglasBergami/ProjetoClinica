@@ -1,12 +1,12 @@
 
 package visão;
 
+import DAO.ComboBoxEspecialidadeDAO;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import modelo.EspecialidadeDTO;
 import Util.Tabela;
 import DAO.EspecialidadeDAO;
-import DAO.TabelaMedicosDAO;
 import visão.TelaPrincipal;
 
 
@@ -14,7 +14,7 @@ import visão.TelaPrincipal;
 public class EspecialidadeDentista extends javax.swing.JInternalFrame {
 
     public int tratamento = 0;
-    TabelaMedicosDAO tabelaDAO = new TabelaMedicosDAO();
+    ComboBoxEspecialidadeDAO comboBoxEspecialidadeDAO = new ComboBoxEspecialidadeDAO();
     Tabela tabela = new Tabela();
     EspecialidadeDTO especialidade = new EspecialidadeDTO();
     EspecialidadeDAO especialidadeDAO = new EspecialidadeDAO();
@@ -231,7 +231,7 @@ public class EspecialidadeDentista extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-       Tabela tabela = tabelaDAO.listaEspecialidade("Select * from especialidade where nome like'%"+txtEspecialidade.getText()+"%' order by id");
+       Tabela tabela = comboBoxEspecialidadeDAO.listaEspecialidade("Select * from especialidade where nome like'%"+txtEspecialidade.getText()+"%' order by id");
        
         tableEspecialidade.setModel(tabela);
         tableEspecialidade.getColumnModel().getColumn(0).setPreferredWidth(50);

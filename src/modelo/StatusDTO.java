@@ -11,6 +11,10 @@ public class StatusDTO {
         this.id = id;
         this.nome = nome;
     }
+    
+    public StatusDTO(){
+        
+    }
 
  
 

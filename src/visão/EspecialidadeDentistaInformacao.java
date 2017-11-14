@@ -60,7 +60,7 @@ public class EspecialidadeDentistaInformacao extends javax.swing.JInternalFrame 
             }
         });
 
-        btnSalvar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/salvar.jpg"))); // NOI18N
+        btnSalvar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/newsalvar.png"))); // NOI18N
         btnSalvar1.setToolTipText("Salvar");
         btnSalvar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

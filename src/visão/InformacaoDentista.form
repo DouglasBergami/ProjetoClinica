@@ -143,12 +143,7 @@
                 <Component class="javax.swing.JComboBox" name="comboBoxEspecialidade">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="4">
-                        <StringItem index="0" value=""/>
-                        <StringItem index="1" value="Cirurgi&#xe3;o"/>
-                        <StringItem index="2" value="Anestesista"/>
-                        <StringItem index="3" value="teste"/>
-                      </StringArray>
+                      <StringArray count="0"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -451,6 +446,9 @@
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" value="Pesquisa CEP"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JFormattedTextField" name="txtCEP">
                   <Properties>
@@ -514,7 +512,7 @@
         <Component class="javax.swing.JButton" name="btnSalvar">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/imagens/salvar.jpg"/>
+              <Image iconType="3" name="/imagens/newsalvar.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Salvar"/>
           </Properties>

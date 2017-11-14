@@ -7,11 +7,16 @@ import javax.swing.ListSelectionModel;
 import modelo.PacienteDTO;
 import Util.Tabela;
 import DAO.PacienteDAO;
-import DAO.TabelaMedicosDAO;
-import DAO.TabelaPacientesDAO;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import modelo.StatusDTO;
 
 
@@ -19,7 +24,6 @@ import modelo.StatusDTO;
 
 public class TelaPaciente extends javax.swing.JInternalFrame {
     
-    TabelaPacientesDAO tabelaPacientesDAO = new TabelaPacientesDAO();
     PacienteDTO paciente = new PacienteDTO();
     PacienteDAO pacienteDAO = new PacienteDAO();
     int tratamento = 0;
@@ -291,7 +295,9 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
 
         //Tabela tabela =  TabelaDAO.listarPacientes("select paciente.id, paciente.nome, status.nome from paciente inner JOIN status on paciente.id_status = status.id where paciente.nome like'%"+txtNome.getText()+"%' order by id");
 
-        Tabela tabela = tabelaPacientesDAO.listarPacientes(codigo, nome, ativo);
+        Tabela tabela = pacienteDAO.listarPacientes(codigo, nome, ativo);
+        
+        
         
         tablePacientes.setModel(tabela);
         tablePacientes.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -300,9 +306,22 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
         tablePacientes.getColumnModel().getColumn(1).setResizable(false);
         tablePacientes.getColumnModel().getColumn(2).setPreferredWidth(180);
         tablePacientes.getColumnModel().getColumn(2).setResizable(false);
+        tablePacientes.getColumnModel().getColumn(3).setPreferredWidth(180);
+        tablePacientes.getColumnModel().getColumn(3).setResizable(false);
         tablePacientes.setAutoResizeMode(tablePacientes.AUTO_RESIZE_OFF);
         tablePacientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+        
+        Action actionSelecao = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                
+                JOptionPane.showMessageDialog(null, "teste");
+                
+            }
+        };
+  
+        ButtonColumn buttonColumnSelecao = new ButtonColumn(tablePacientes, actionSelecao, 3);
+        buttonColumnSelecao.setMnemonic(KeyEvent.VK_D);
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -342,6 +361,8 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
             tratamento = 2;
 
             String id = tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString();
+            
+            
 
             InformacaoPaciente informacaoPaciente = new InformacaoPaciente (tratamento, id);
             TelaPrincipal.jDesktopPaneMedicos.add(informacaoPaciente);

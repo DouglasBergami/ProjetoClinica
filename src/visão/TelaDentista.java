@@ -15,7 +15,6 @@ import Util.Tabela;
 import DAO.ComboBoxEspecialidadeDAO;
 import DAO.ConexaoBD;
 import DAO.DentistaDAO;
-import DAO.TabelaMedicosDAO;
 import java.util.List;
 
 
@@ -26,7 +25,6 @@ public class TelaDentista extends javax.swing.JInternalFrame {
     DentistaDAO medicDAO = new DentistaDAO();
     ConexaoBD conex = new ConexaoBD();
     Tabela modelo = new Tabela();
-    TabelaMedicosDAO TabelaDAO = new TabelaMedicosDAO();
     ComboBoxEspecialidadeDAO comboboxEspecialidade = new ComboBoxEspecialidadeDAO();
     private List<EspecialidadeDTO> listaEspecialidade;
     int tratamento = 0; 
@@ -220,7 +218,7 @@ public class TelaDentista extends javax.swing.JInternalFrame {
         jScrollPaneTabela.setViewportView(tableMedicos);
 
         btnCarregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/carregar.png"))); // NOI18N
-        btnCarregar.setToolTipText("Pesquisar");
+        btnCarregar.setToolTipText("Carregar");
         btnCarregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCarregarActionPerformed(evt);
@@ -286,7 +284,7 @@ public class TelaDentista extends javax.swing.JInternalFrame {
         String crm = txtCrm.getText().equals("") ? null : txtCrm.getText();
         int especialidade = comboBoxEspecialidade.getSelectedItem().toString().equals("TODOS") ? 0 : listaEspecialidade.get(comboBoxEspecialidade.getSelectedIndex()).getId(); 
 
-        Tabela tabela =  TabelaDAO.listarMedicos(codigo, nome, especialidade, crm);
+        Tabela tabela =  medicDAO.listarMedicos(codigo, nome, especialidade, crm);
          
         tableMedicos.setModel(tabela);
         tableMedicos.getColumnModel().getColumn(0).setPreferredWidth(50);

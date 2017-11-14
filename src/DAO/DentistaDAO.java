@@ -1,8 +1,10 @@
 
 package DAO;
 
+import Util.Tabela;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import modelo.DentistaDTO;
 
@@ -11,6 +13,9 @@ public class DentistaDAO {
     
     ConexaoBD conex = new ConexaoBD();
     DentistaDTO medico = new DentistaDTO();
+    Tabela tabela = new Tabela();
+
+   
     public void Salvar(DentistaDTO mod){
         conex.conexao();
         try {
@@ -121,5 +126,75 @@ public class DentistaDAO {
             conex.desconeca();
             return mod;
         }
+        
+        public Tabela listarMedicos(String codigo, String nome, int especialidade, String crm) {
+
+        ArrayList dados = new ArrayList();
+        String[] colunas = new String[]{"id", "nome", "especialidade", "crm"};
+
+        conex.conexao();
+
+        String sql = "select medicos.id, medicos.nome, especialidade.nome, medicos.crm from medicos inner JOIN especialidade on id_especialidade = especialidade.id";
+
+        
+        boolean valida = false;
+
+        if (codigo != null && !codigo.equals("")) {
+            if(valida){          
+               sql += " and medicos.id = " + codigo; 
+            }else{
+                sql += " where medicos.id = " + codigo;
+                valida = true;                
+            }
+            
+        }
+
+        if (nome != null && !nome.equals("")) {
+            if (valida) {
+                sql += " and medicos.nome like'%" + nome + "%'";
+            } else {
+                sql += " where medicos.nome like'%" + nome + "%'";
+                valida = true;
+            }
+        }
+
+        if (especialidade != 0) {
+            if (valida) {
+                sql += " and id_especialidade = " + especialidade;
+            } else {
+                sql += " where id_especialidade = " + especialidade;
+                valida = true;
+            }
+        }
+
+        if (crm != null && !crm.equals("")) {
+            if (valida) {
+                sql += " and medicos.crm like'%" + crm + "%'";
+            } else {
+                sql += " where medicos.crm like'%" + crm + "%'";
+                valida = true;
+            }
+        }
+        
+        conex.executaSQL(sql);
+
+        try {
+            conex.rs.first();
+
+            do {
+
+                dados.add((new Object[]{conex.rs.getInt("id"), conex.rs.getString("nome"), conex.rs.getString("especialidade.nome"), conex.rs.getInt("crm")}));
+            } while (conex.rs.next());
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Nenhum dentista encontrado");
+        }
+
+        tabela.setLinhas(dados);
+        tabela.setColunas(colunas);
+        conex.desconeca();
+
+        return tabela;
+    }
     
 }

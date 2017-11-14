@@ -9,6 +9,7 @@ public class AgendamentoDTO {
     private int codigo;
     private int codigoDentista;
     private int CodigoPaciente;
+    private int id_status;
     private Date data;
     private String hora;
     private String servico;
@@ -17,6 +18,16 @@ public class AgendamentoDTO {
         
         
     }
+
+    public int getId_status() {
+        return id_status;
+    }
+
+    public void setId_status(int id_status) {
+        this.id_status = id_status;
+    }
+    
+    
 
     public int getCodigoDentista() {
         return codigoDentista;
