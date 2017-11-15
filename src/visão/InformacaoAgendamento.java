@@ -65,7 +65,7 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         listaStatus = comboBoxStatusDAO.carregaCombo();
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(listaStatus.toArray());
         jComboBoxStatus.setModel(defaultComboBoxModel);
-        jComboBoxStatus.setSelectedIndex(comboBoxStatusDAO.encontraStatusAgendamento(listaStatus, agendamento));
+        
         
         agendamento.setCodigo((Integer.parseInt(id)));
         agendamentoDAO.selecionarAgendamento(agendamento);
@@ -76,6 +76,7 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         txtHora.setText(agendamento.getHora());
         txtServico.setText(agendamento.getServico());
         jDataAgendamento.setDate(agendamento.getData());
+        jComboBoxStatus.setSelectedIndex(comboBoxStatusDAO.encontraStatusAgendamento(listaStatus, agendamento));
         consultaNomePaciente();
         consultaNomeDentista();    
     
@@ -351,8 +352,10 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         agendamento.setCodigoDentista((Integer.parseInt(txtIdDentista.getText())));
         agendamento.setCodigoPaciente((Integer.parseInt(txtIdPaciente.getText())));
         agendamento.setData(jDataAgendamento.getDate());
+         agendamento.setId_status(listaStatus.get(jComboBoxStatus.getSelectedIndex()).getId());
         agendamento.setHora(txtHora.getText());
         agendamento.setServico(txtServico.getText());
+       
   
     }
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
@@ -360,7 +363,14 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
             salvarDadosAgendamento();
             agendamentoDAO.salvar(agendamento);
  
-        }
+        }else{
+               
+                salvarDadosAgendamento();
+                agendamentoDAO.editar(agendamento);
+                
+            }
+            
+            
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

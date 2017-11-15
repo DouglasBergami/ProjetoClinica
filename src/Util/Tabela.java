@@ -9,7 +9,6 @@ public class Tabela extends AbstractTableModel{
     
     private ArrayList linhas = null;
     private String[] colunas = null;
-    private String pesquisar;
 
         
     public Tabela(){
@@ -54,12 +53,6 @@ public class Tabela extends AbstractTableModel{
        return colunas[numCol];
    }
 
-    public String getPesquisar() {
-        return pesquisar;
-    }
-
-    public void setPesquisar(String pesquisar) {
-        this.pesquisar = pesquisar;
-    }
+ 
     
 }

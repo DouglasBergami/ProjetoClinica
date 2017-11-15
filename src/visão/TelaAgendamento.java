@@ -264,13 +264,23 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
 
-        int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
-        if(i==JOptionPane.YES_OPTION){
+        
+        try{
+            
+            String id = tableAgendamento.getValueAt(tableAgendamento.getSelectedRow(), 0).toString();
+            
+             int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
+         
+            if(i==JOptionPane.YES_OPTION){
 
-            //paciente.setCodigo(Integer.parseInt(tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString()));
-            //pacienteDAO.excluir(paciente);
-
+           agendamentoDAO.excluir(id);
+           
+            }
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Nenhum item selecionado");
         }
+  
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed

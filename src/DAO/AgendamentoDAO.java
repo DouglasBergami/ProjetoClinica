@@ -45,12 +45,12 @@ public class AgendamentoDAO {
         conex.desconeca();
     }
     
-    public void excluir(AgendamentoDTO agendamento){
+    public void excluir(String id){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("delete from agendamento where id =?");
+            PreparedStatement pst = conex.con.prepareStatement("delete from agendamento where id = "+id);
             
-            pst.setInt(1, agendamento.getCodigo());
+            
             pst.execute();
             JOptionPane.showMessageDialog(null, "agendamento excluido com sucesso");
             
@@ -66,12 +66,14 @@ public class AgendamentoDAO {
          conex.conexao();
         
         try {
-            PreparedStatement pst = conex.con.prepareStatement("update agendamento set id_medico = ?, id_paciente = ?, data=?, hora = ?, servico = ?, where id = ?");
+            PreparedStatement pst = conex.con.prepareStatement("update agendamento set id_medico = ?, id_paciente = ?, data=?, id_status = ?, hora = ?, servico = ? where id = ?");
             pst.setInt   (1, agendamento.getCodigoDentista());
             pst.setInt   (2, agendamento.getCodigoPaciente());
             pst.setDate  (3, new java.sql.Date(agendamento.getData().getTime()));
-            pst.setString(5, agendamento.getServico());
-            pst.setInt   (6, agendamento.getCodigo());      
+            pst.setInt   (4, agendamento.getId_status());
+            pst.setString(5, agendamento.getHora());
+            pst.setString(6, agendamento.getServico());
+            pst.setInt   (7, agendamento.getCodigo());      
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados alterado com sucesso");
         } catch (SQLException ex) {
