@@ -8,7 +8,7 @@ package visão;
 import java.awt.List;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.UsuarioDTO;
+import modeloDTO.UsuarioDTO;
 import DAO.UsuarioDAO;
 
 /**

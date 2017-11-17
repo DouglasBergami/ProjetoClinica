@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListSelectionModel;
-import modelo.StatusDTO;
+import modeloDTO.StatusDTO;
 
 
 public class TelaAgendamento extends javax.swing.JInternalFrame {

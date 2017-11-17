@@ -6,16 +6,16 @@ import DAO.ComboBoxEspecialidadeDAO;
 import Util.FormataNumeros;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.DentistaDTO;
+import modeloDTO.DentistaDTO;
 import Util.Tabela;
 import DAO.ComboBoxStatusDAO;
 import DAO.DentistaDAO;
-import modelo.StatusDTO;
+import modeloDTO.StatusDTO;
 import javax.swing.DefaultComboBoxModel;
 import Util.ValidarCpf;
 import Util.WebServiceCep;
 import java.util.List;
-import modelo.EspecialidadeDTO;
+import modeloDTO.EspecialidadeDTO;
 
 public class InformacaoDentista extends javax.swing.JInternalFrame {
 

@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.PacienteDTO;
+import modeloDTO.PacienteDTO;
 
 
 public class PacienteDAO {

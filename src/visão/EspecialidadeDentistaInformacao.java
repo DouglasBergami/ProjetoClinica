@@ -2,7 +2,7 @@
 package visão;
 
 import javax.swing.JOptionPane;
-import modelo.EspecialidadeDTO;
+import modeloDTO.EspecialidadeDTO;
 import DAO.EspecialidadeDAO;
 
 

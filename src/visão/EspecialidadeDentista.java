@@ -4,7 +4,7 @@ package visão;
 import DAO.ComboBoxEspecialidadeDAO;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import modelo.EspecialidadeDTO;
+import modeloDTO.EspecialidadeDTO;
 import Util.Tabela;
 import DAO.EspecialidadeDAO;
 import visão.TelaPrincipal;

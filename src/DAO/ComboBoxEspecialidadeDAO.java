@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import modelo.DentistaDTO;
-import modelo.EspecialidadeDTO;
+import modeloDTO.DentistaDTO;
+import modeloDTO.EspecialidadeDTO;
 
 
 

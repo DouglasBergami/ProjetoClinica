@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import modelo.DentistaDTO;
+import modeloDTO.DentistaDTO;
 
 
 public class DentistaDAO {

@@ -3,7 +3,7 @@ package DAO;
 
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import modelo.UsuarioDTO;
+import modeloDTO.UsuarioDTO;
 
 
 public class UsuarioDAO {

@@ -12,9 +12,9 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import modelo.AgendamentoDTO;
-import modelo.DentistaDTO;
-import modelo.PacienteDTO;
+import modeloDTO.AgendamentoDTO;
+import modeloDTO.DentistaDTO;
+import modeloDTO.PacienteDTO;
 
 
 public class AgendamentoDAO {
@@ -30,16 +30,17 @@ public class AgendamentoDAO {
         conex.conexao();
         
         try {
-            PreparedStatement pst = conex.con.prepareStatement("insert into agendamento (id_medico, id_paciente, data, hora, servico) values (?, ?, ?, ?, ?)");
-            pst.setInt   (1, agendamento.getCodigoDentista());
-            pst.setInt   (2, agendamento.getCodigoPaciente());
+            PreparedStatement pst = conex.con.prepareStatement("insert into agendamento (id_medico, id_paciente, data, id_status, hora, servico) values (?, ?, ?, ?, ?, ?)");
+            pst.setInt   (1, agendamento.getDentistaDTO().getCodigo());
+            pst.setInt   (2, agendamento.getPacienteDTO().getCodigo());
             pst.setDate  (3, new java.sql.Date(agendamento.getData().getTime()));
-            pst.setString(4, agendamento.getHora());
-            pst.setString(5, agendamento.getServico());         
+            pst.setInt   (4, agendamento.getId_status());
+            pst.setString(5, agendamento.getHora());
+            pst.setString(6, agendamento.getServico());         
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados inseridos com sucesso");           
         } catch (SQLException ex) {
-            //JOptionPane.showMessageDialog(null, "Erro ao inserir dados "+"\n"+ex);
+            JOptionPane.showMessageDialog(null, "Erro ao inserir dados "+"\n"+ex);
         }
         
         conex.desconeca();
@@ -67,8 +68,8 @@ public class AgendamentoDAO {
         
         try {
             PreparedStatement pst = conex.con.prepareStatement("update agendamento set id_medico = ?, id_paciente = ?, data=?, id_status = ?, hora = ?, servico = ? where id = ?");
-            pst.setInt   (1, agendamento.getCodigoDentista());
-            pst.setInt   (2, agendamento.getCodigoPaciente());
+            pst.setInt   (1, agendamento.getDentistaDTO().getCodigo());
+            pst.setInt   (2, agendamento.getPacienteDTO().getCodigo());
             pst.setDate  (3, new java.sql.Date(agendamento.getData().getTime()));
             pst.setInt   (4, agendamento.getId_status());
             pst.setString(5, agendamento.getHora());
@@ -87,7 +88,7 @@ public class AgendamentoDAO {
    public AgendamentoDTO selecionarAgendamento (AgendamentoDTO agendamento){
             
             conex.conexao();
-            conex.executaSQL("select * from agendamento where id ="+agendamento.getCodigo());
+            conex.executaSQL("select * from agendamento inner join medicos on id_medico = medicos.id inner join paciente on id_paciente = paciente.id where agendamento.id = "+agendamento.getCodigo());
             
             try{
                 
@@ -95,12 +96,17 @@ public class AgendamentoDAO {
                            
 
                 agendamento.setCodigo(conex.rs.getInt("id"));
-                agendamento.setCodigoDentista(conex.rs.getInt("id_medico"));
-                agendamento.setCodigoPaciente(conex.rs.getInt("id_paciente"));
+                dentista.setCodigo(conex.rs.getInt("medicos.id"));
+                dentista.setNome(conex.rs.getString("medicos.nome"));
+                paciente.setCodigo(conex.rs.getInt("paciente.id"));
+                paciente.setNome(conex.rs.getString("paciente.nome"));
                 agendamento.setData(conex.rs.getDate("data"));
                 agendamento.setId_status(conex.rs.getInt("id_status"));
                 agendamento.setHora(conex.rs.getString("hora"));
                 agendamento.setServico(conex.rs.getString("servico"));
+                agendamento.setDentistaDTO(dentista);
+                agendamento.setPacienteDTO(paciente);
+                
     
                 }
                     catch(SQLException ex){

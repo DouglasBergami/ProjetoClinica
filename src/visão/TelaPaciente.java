@@ -4,7 +4,7 @@ package visão;
 import DAO.ComboBoxStatusDAO;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import modelo.PacienteDTO;
+import modeloDTO.PacienteDTO;
 import Util.Tabela;
 import DAO.PacienteDAO;
 import java.awt.event.ActionEvent;
@@ -17,7 +17,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import modelo.StatusDTO;
+import modeloDTO.StatusDTO;
 
 
 
