@@ -43,12 +43,10 @@ public class PacienteDAO {
         conex.desconeca();
     }
     
-    public void excluir(PacienteDTO paciente){
+    public void excluir(String id){
         conex.conexao();
         try {
-            PreparedStatement pst = conex.con.prepareStatement("delete from paciente where id =?");
-            
-            pst.setInt(1, paciente.getCodigo());
+            PreparedStatement pst = conex.con.prepareStatement("delete from paciente where id = "+id);
             pst.execute();
             JOptionPane.showMessageDialog(null, "paciente excluido com sucesso");
             
@@ -133,9 +131,9 @@ public class PacienteDAO {
         
         if (codigo != null && !codigo.equals("")) {
             if(valida){          
-               sql += " and medicos.id = " + codigo; 
+               sql += " and paciente.id = " + codigo; 
             }else{
-                sql += " where medicos.id = " + codigo;
+                sql += " where paciente.id = " + codigo;
                 valida = true;                
             }
         }

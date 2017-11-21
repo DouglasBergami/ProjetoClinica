@@ -15,49 +15,49 @@ import Util.Tabela;
 import DAO.ComboBoxEspecialidadeDAO;
 import DAO.ConexaoBD;
 import DAO.DentistaDAO;
+import Util.FormataNumeros;
 import java.util.List;
-
 
 public class TelaDentista extends javax.swing.JInternalFrame {
 
- 
-    DentistaDTO classeBean = new DentistaDTO();
+    DentistaDTO dentistaDAO = new DentistaDTO();
     DentistaDAO medicDAO = new DentistaDAO();
     ConexaoBD conex = new ConexaoBD();
     Tabela modelo = new Tabela();
     ComboBoxEspecialidadeDAO comboboxEspecialidade = new ComboBoxEspecialidadeDAO();
     private List<EspecialidadeDTO> listaEspecialidade;
-    int tratamento = 0; 
+    int tratamento = 0;
     int pesquisar = 0;
-    
+
     public TelaDentista() {
         initComponents();
+        txtId.setDocument(new FormataNumeros());
+        txtCrm.setDocument(new FormataNumeros());
         btnCarregar.setVisible(false);
-        
+
         listaEspecialidade = comboboxEspecialidade.carregaComboEspecialidade();
         DefaultComboBoxModel defaultComboBox = new DefaultComboBoxModel(listaEspecialidade.toArray());
         comboBoxEspecialidade.setModel(defaultComboBox);
         comboBoxEspecialidade.addItem("TODOS");
         comboBoxEspecialidade.setSelectedItem("TODOS");
-       
-        
+
     }
-    
+
     public TelaDentista(int pesquisar) {
         initComponents();
         this.pesquisar = pesquisar;
+        txtId.setDocument(new FormataNumeros());
+        txtCrm.setDocument(new FormataNumeros());
         btnCarregar.setVisible(true);
-        
+
         listaEspecialidade = comboboxEspecialidade.carregaComboEspecialidade();
         DefaultComboBoxModel defaultComboBox = new DefaultComboBoxModel(listaEspecialidade.toArray());
         comboBoxEspecialidade.setModel(defaultComboBox);
         comboBoxEspecialidade.addItem("TODOS");
         comboBoxEspecialidade.setSelectedItem("TODOS");
-       
-        
+
     }
 
-  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -277,15 +277,14 @@ public class TelaDentista extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-     
-        
+
         String codigo = txtId.getText().equals("") ? null : txtId.getText();
         String nome = txtNome.getText().equals("") ? null : txtNome.getText();
         String crm = txtCrm.getText().equals("") ? null : txtCrm.getText();
-        int especialidade = comboBoxEspecialidade.getSelectedItem().toString().equals("TODOS") ? 0 : listaEspecialidade.get(comboBoxEspecialidade.getSelectedIndex()).getId(); 
+        int especialidade = comboBoxEspecialidade.getSelectedItem().toString().equals("TODOS") ? 0 : listaEspecialidade.get(comboBoxEspecialidade.getSelectedIndex()).getId();
 
-        Tabela tabela =  medicDAO.listarMedicos(codigo, nome, especialidade, crm);
-         
+        Tabela tabela = medicDAO.listarMedicos(codigo, nome, especialidade, crm);
+
         tableMedicos.setModel(tabela);
         tableMedicos.getColumnModel().getColumn(0).setPreferredWidth(50);
         tableMedicos.getColumnModel().getColumn(1).setPreferredWidth(180);
@@ -293,8 +292,7 @@ public class TelaDentista extends javax.swing.JInternalFrame {
         tableMedicos.getColumnModel().getColumn(3).setPreferredWidth(180);
         tableMedicos.setAutoResizeMode(tableMedicos.AUTO_RESIZE_OFF);
         tableMedicos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        
+
 
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
@@ -303,70 +301,70 @@ public class TelaDentista extends javax.swing.JInternalFrame {
 
         InformacaoDentista InformacaoMedicos = new InformacaoDentista(tratamento);
         TelaPrincipal.jDesktopPaneMedicos.add(InformacaoMedicos);
-        
+
         InformacaoMedicos.setVisible(true);
-        
-        
-        
+
 
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-                  
- 
-        int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
-        if(i==JOptionPane.YES_OPTION){
 
-            classeBean.setCodigo(Integer.parseInt(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString()));
-            medicDAO.Excluir(classeBean);
+        try {
+            
+            String id = tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString();
+            
+            int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
+            if (i == JOptionPane.YES_OPTION) {
+                medicDAO.Excluir(id);
+            }
 
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Nenhum item selecionado");
         }
-             
+
 
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void tableMedicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMedicosMouseClicked
 
-        if (evt.getClickCount()==2){
-            
-            if(pesquisar==0){
-                
-            
-            tratamento = 2;
+        if (evt.getClickCount() == 2) {
 
-            String id = tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString();
+            if (pesquisar == 0) {
 
-            InformacaoDentista InformacaoMedicos = new InformacaoDentista (tratamento, id);
-            TelaPrincipal.jDesktopPaneMedicos.add(InformacaoMedicos);
-            InformacaoMedicos.setVisible(true);
-            }
-            else{
-                
-                 InformacaoAgendamento.txtIdDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString());
+                tratamento = 2;
+
+                String id = tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString();
+
+                InformacaoDentista InformacaoMedicos = new InformacaoDentista(tratamento, id);
+                TelaPrincipal.jDesktopPaneMedicos.add(InformacaoMedicos);
+                InformacaoMedicos.setVisible(true);
+            } else {
+
+                InformacaoAgendamento.txtIdDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString());
                 InformacaoAgendamento.txtDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 1).toString());
-                 dispose();
+                dispose();
             }
         }
     }//GEN-LAST:event_tableMedicosMouseClicked
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-            tratamento = 2;
+        tratamento = 2;
 
-            String id = tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString();
+        String id = tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString();
 
-            InformacaoDentista InformacaoMedicos = new InformacaoDentista (tratamento, id);
-            TelaPrincipal.jDesktopPaneMedicos.add(InformacaoMedicos);
-            InformacaoMedicos.setVisible(true);
+        InformacaoDentista InformacaoMedicos = new InformacaoDentista(tratamento, id);
+        TelaPrincipal.jDesktopPaneMedicos.add(InformacaoMedicos);
+        InformacaoMedicos.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnCarregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarregarActionPerformed
-                try{
-                InformacaoAgendamento.txtIdDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString());
-                InformacaoAgendamento.txtIdDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 1).toString());
-                dispose();
-                 }catch(Exception ex){
-                     JOptionPane.showMessageDialog(null, "Você deve selecionar um paciente");
-                 }
+        try {
+            InformacaoAgendamento.txtIdDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString());
+            InformacaoAgendamento.txtIdDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 1).toString());
+            dispose();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Você deve selecionar um paciente");
+        }
     }//GEN-LAST:event_btnCarregarActionPerformed
 
 

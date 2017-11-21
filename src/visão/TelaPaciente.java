@@ -7,6 +7,7 @@ import javax.swing.ListSelectionModel;
 import modeloDTO.PacienteDTO;
 import Util.Tabela;
 import DAO.PacienteDAO;
+import Util.FormataNumeros;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
 
     public TelaPaciente() {
         initComponents();
+        txtId.setDocument(new FormataNumeros());
         btnCarregar.setVisible(false);
         listaStatus = comboBoxStatusDAO.carregaCombo();
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(listaStatus.toArray());
@@ -44,6 +46,7 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
     public TelaPaciente(int pesquisar) {
         this.pesquisar = pesquisar;
         initComponents();
+        txtId.setDocument(new FormataNumeros());
         listaStatus = comboBoxStatusDAO.carregaCombo();
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(listaStatus.toArray());
         comboBoxStatus.setModel(defaultComboBoxModel);
@@ -326,13 +329,21 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
 
-        int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
-        if(i==JOptionPane.YES_OPTION){
+        try{
+            String id = (tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString());
+            
+            int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
+            if(i==JOptionPane.YES_OPTION){
 
-            paciente.setCodigo(Integer.parseInt(tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString()));
-            pacienteDAO.excluir(paciente);
+            pacienteDAO.excluir(id);
 
         }
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Nenhum item selecionado");
+        }
+        
+        
 
     }//GEN-LAST:event_btnExcluirActionPerformed
 
