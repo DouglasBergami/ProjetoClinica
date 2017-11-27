@@ -1,38 +1,56 @@
-
 package visão;
 
 import DAO.AgendamentoDAO;
 import DAO.ComboBoxStatusDAO;
 import javax.swing.JOptionPane;
 import Util.Tabela;
+import com.toedter.calendar.JDateChooser;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ListSelectionModel;
 import modeloDTO.StatusDTO;
 
-
 public class TelaAgendamento extends javax.swing.JInternalFrame {
+
     int tratamento = 0;
     ComboBoxStatusDAO comboBoxStatusDAO = new ComboBoxStatusDAO();
     AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
     private List<StatusDTO> list;
-    
-  
+    Toolkit t = Toolkit.getDefaultToolkit();
+    Dimension d = t.getScreenSize();
+    int tamanho1 = d.width-1370;
+    int tamanho2 = d.height-930;
+
     public TelaAgendamento() {
-        
+
         initComponents();
-        
+        //setBounds(360, 75, 868, 515);
         list = comboBoxStatusDAO.carregaCombo();
         DefaultComboBoxModel comboStatus = new DefaultComboBoxModel(list.toArray());
         comboBoxStatus.setModel(comboStatus);
         comboBoxStatus.addItem("TODOS");
         comboStatus.setSelectedItem("TODOS");
-        jRadioButtonDentista.setSelected(true);
-    }
+        jRadioButtonDentista.setSelected(true);  
 
+        /*try {
+
+            jDataAgendamento.setDate(new SimpleDateFormat("dd/mm/yyyy").parse("15/01/1993"));
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "data inválida");
+        }*/
+
+        //JDateChooser jDateChooser1 = new JDateChooser("dd/MM/yyyy", "####/##/##", '_');
+   
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -50,7 +68,7 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         comboBoxStatus = new javax.swing.JComboBox<>();
-        jDataAgendamento = new com.toedter.calendar.JDateChooser();
+        jDataAgendamento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
         jLabel3 = new javax.swing.JLabel();
         jRadioButtonPaciente = new javax.swing.JRadioButton();
         jRadioButtonDentista = new javax.swing.JRadioButton();
@@ -105,6 +123,12 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Ativo");
 
+        jDataAgendamento.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                jDataAgendamentoFocusLost(evt);
+            }
+        });
+
         jLabel3.setText("Data");
 
         buttonGroup1.add(jRadioButtonPaciente);
@@ -134,9 +158,7 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel3)
                     .addComponent(jDataAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jRadioButtonPaciente)
@@ -254,55 +276,46 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
-         tratamento = 1;
+        tratamento = 1;
 
         InformacaoAgendamento informacaoAgendamento = new InformacaoAgendamento(tratamento);
         TelaPrincipal.jDesktopPaneMedicos.add(informacaoAgendamento);
-        
+
         informacaoAgendamento.setVisible(true);
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
 
-        
-        try{
-            
-            String id = tableAgendamento.getValueAt(tableAgendamento.getSelectedRow(), 0).toString();
-            
-             int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
-         
-            if(i==JOptionPane.YES_OPTION){
+        try {
 
-           agendamentoDAO.excluir(id);
-           
+            String id = tableAgendamento.getValueAt(tableAgendamento.getSelectedRow(), 0).toString();
+
+            int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
+
+            if (i == JOptionPane.YES_OPTION) {
+
+                agendamentoDAO.excluir(id);
+
             }
-            
-        }catch(Exception e){
+
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Nenhum item selecionado");
         }
-  
+
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         String codigo = txtId.getText().equals("") ? null : txtId.getText();
         String nome = txtNome.getText().equals("") ? null : txtNome.getText();
-        int status  = comboBoxStatus.getSelectedItem().equals("TODOS") ? 0 : list.get(comboBoxStatus.getSelectedIndex()).getId();
-        boolean pessoa = jRadioButtonDentista.isSelected() ? true: false;
-        DateFormat dateformat = new SimpleDateFormat("YYYY/MM/dd");
-        //String data = dateformat.format(jDataAgendamento.getDate()==null ? jDataAgendamento.grabFocus() : jDataAgendamento.getDate());  
-        
-        String data;
-        
-        if (jDataAgendamento.getDate()==null){
-            data = "VAZIO";           
-        }else{
-            data = dateformat.format(jDataAgendamento.getDate());
-            
-        }
+        int status = comboBoxStatus.getSelectedItem().equals("TODOS") ? 0 : list.get(comboBoxStatus.getSelectedIndex()).getId();
+        boolean pessoa = jRadioButtonDentista.isSelected() ? true : false;
+        DateFormat dateformat = new SimpleDateFormat("yyyy/MM/dd");
+        Date pegaData = jDataAgendamento.getDate();
+        String data = pegaData== null ? "" : dateformat.format(pegaData);
+
 
         Tabela tabela = agendamentoDAO.listarAgendamentos(codigo, nome, status, pessoa, data);
-        
-        
+
         tableAgendamento.setModel(tabela);
         tableAgendamento.getColumnModel().getColumn(0).setPreferredWidth(100);
         tableAgendamento.getColumnModel().getColumn(1).setPreferredWidth(50);
@@ -312,7 +325,7 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
         tableAgendamento.getColumnModel().getColumn(5).setPreferredWidth(115);
         tableAgendamento.setAutoResizeMode(tableAgendamento.AUTO_RESIZE_OFF);
         tableAgendamento.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
@@ -320,14 +333,14 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
 
         String id = tableAgendamento.getValueAt(tableAgendamento.getSelectedRow(), 0).toString();
 
-            InformacaoAgendamento informacaoAgendamento = new InformacaoAgendamento(tratamento, id);
-            TelaPrincipal.jDesktopPaneMedicos.add(informacaoAgendamento);
-            informacaoAgendamento.setVisible(true);
+        InformacaoAgendamento informacaoAgendamento = new InformacaoAgendamento(tratamento, id);
+        TelaPrincipal.jDesktopPaneMedicos.add(informacaoAgendamento);
+        informacaoAgendamento.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void tableAgendamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableAgendamentoMouseClicked
 
-        if (evt.getClickCount()==2){
+        if (evt.getClickCount() == 2) {
 
             tratamento = 2;
 
@@ -343,6 +356,13 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jDataAgendamentoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDataAgendamentoFocusLost
+        if(jDataAgendamento.getDate()==null){
+            
+            JOptionPane.showMessageDialog(null, "data inválida");
+        }
+    }//GEN-LAST:event_jDataAgendamentoFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

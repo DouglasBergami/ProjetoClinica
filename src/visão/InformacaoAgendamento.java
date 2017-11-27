@@ -1,14 +1,5 @@
-
 package visão;
 
-import BO.AgendamentoBO;
-import Util.MensagemUtil;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import modeloDTO.AgendamentoDTO;
 import modeloDTO.DentistaDTO;
 import Util.FormataNumeros;
@@ -17,14 +8,13 @@ import DAO.AgendamentoDAO;
 import DAO.ComboBoxStatusDAO;
 import DAO.DentistaDAO;
 import DAO.PacienteDAO;
-import java.util.ArrayList;
+import com.toedter.calendar.JDateChooser;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import modeloDTO.StatusDTO;
 
-
 public class InformacaoAgendamento extends javax.swing.JInternalFrame {
-    
+
     PacienteDTO paciente = new PacienteDTO();
     PacienteDAO pacienteDAO = new PacienteDAO();
     DentistaDTO dentista = new DentistaDTO();
@@ -35,8 +25,6 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
     int tratamento = 0;
     int pesquisar = 0;
     private List<StatusDTO> listaStatus;
-    
-    
 
     public InformacaoAgendamento(int tratamento) {
         initComponents();
@@ -47,33 +35,31 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         jComboBoxStatus.setEnabled(false);
         txtDentista.setEditable(false);
         txtPaciente.setEditable(false);
-        
+
         listaStatus = comboBoxStatusDAO.carregaCombo();
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(listaStatus.toArray());
         jComboBoxStatus.setModel(defaultComboBoxModel);
         jComboBoxStatus.setSelectedIndex(0);
-        
-        
+
     }
-    
-    public InformacaoAgendamento(int tratamento, String id){
-       initComponents();
-       this.tratamento = tratamento;
+
+    public InformacaoAgendamento(int tratamento, String id) {
+        initComponents();
+        this.tratamento = tratamento;
         txtIdDentista.setDocument(new FormataNumeros());
         txtIdPaciente.setDocument(new FormataNumeros());
         txtIdAgendamento.setEnabled(false);
         jComboBoxStatus.setEnabled(true);
         txtDentista.setEditable(false);
         txtPaciente.setEditable(false);
-        
+
         listaStatus = comboBoxStatusDAO.carregaCombo();
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(listaStatus.toArray());
         jComboBoxStatus.setModel(defaultComboBoxModel);
-        
-        
+
         agendamento.setCodigo((Integer.parseInt(id)));
         agendamentoDAO.selecionarAgendamento(agendamento);
-        
+
         txtIdAgendamento.setText((id));
         txtIdDentista.setText((Integer.toString(agendamento.getDentistaDTO().getCodigo())));
         txtDentista.setText(agendamento.getDentistaDTO().getNome());
@@ -83,13 +69,9 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         txtServico.setText(agendamento.getServico());
         jDataAgendamento.setDate(agendamento.getData());
         jComboBoxStatus.setSelectedIndex(comboBoxStatusDAO.encontraStatusAgendamento(listaStatus, agendamento));
-        
-        //consultaNomePaciente();
-        //consultaNomeDentista();    
-    
+
     }
 
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -107,7 +89,7 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         jButton3 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jDataAgendamento = new com.toedter.calendar.JDateChooser();
+        jDataAgendamento = new JDateChooser("dd/MM/yyyy", "##/##/#####", '_');
         txtHora = new javax.swing.JFormattedTextField();
         txtServico = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -353,8 +335,8 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    public void salvarDadosAgendamento(){
-        
+    public void salvarDadosAgendamento() {
+
         dentista.setCodigo((Integer.parseInt(txtIdDentista.getText())));
         paciente.setCodigo((Integer.parseInt(txtIdPaciente.getText())));
         agendamento.setData(jDataAgendamento.getDate());
@@ -363,21 +345,21 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         agendamento.setServico(txtServico.getText());
         agendamento.setDentistaDTO(dentista);
         agendamento.setPacienteDTO(paciente);
-  
+
     }
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-            if(tratamento == 1){
+        if (tratamento == 1) {
             salvarDadosAgendamento();
             agendamentoDAO.salvar(agendamento);
- 
-        }else{
-               
-                salvarDadosAgendamento();
-                agendamentoDAO.editar(agendamento);
-                
-            }
-            
-            
+
+        } else {
+
+            salvarDadosAgendamento();
+            agendamentoDAO.editar(agendamento);
+
+        }
+
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -385,7 +367,7 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         TelaPaciente telaPaciente = new TelaPaciente(pesquisar);
         TelaPrincipal.jDesktopPaneMedicos.add(telaPaciente);
         telaPaciente.setVisible(true);
-                
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -395,52 +377,50 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         telaDentista.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    public void consultaNomePaciente(){
-       
+    public void consultaNomePaciente() {
+
         paciente = new PacienteDTO();
-        
-        if(!txtIdPaciente.getText().isEmpty()){
-           
+
+        if (!txtIdPaciente.getText().isEmpty()) {
+
             paciente.setCodigo((Integer.parseInt(txtIdPaciente.getText())));
             pacienteDAO.selecionarPaciente(paciente);
             txtPaciente.setText("");
-            
-            
-            if(!paciente.getNome().isEmpty()){
-                
+
+            if (!paciente.getNome().isEmpty()) {
+
                 txtPaciente.setText(paciente.getNome());
-                
+
             }
-            
+
         }
-        
+
     }
-    
+
     private void txtIdPacienteFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIdPacienteFocusLost
-       consultaNomePaciente();
+        consultaNomePaciente();
     }//GEN-LAST:event_txtIdPacienteFocusLost
 
-    public void consultaNomeDentista(){
-        
+    public void consultaNomeDentista() {
+
         dentista = new DentistaDTO();
-        
-        if(!txtIdDentista.getText().isEmpty()){
-           
+
+        if (!txtIdDentista.getText().isEmpty()) {
+
             dentista.setCodigo((Integer.parseInt(txtIdDentista.getText())));
             dentistaDAO.selecionarMedico(dentista);
             txtDentista.setText("");
-            
-            
-            if(!dentista.getNome().isEmpty()){
-                
+
+            if (!dentista.getNome().isEmpty()) {
+
                 txtDentista.setText(dentista.getNome());
-                
+
             }
-            
+
         }
-        
+
     }
-    
+
     private void txtIdDentistaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIdDentistaFocusLost
         consultaNomeDentista();
     }//GEN-LAST:event_txtIdDentistaFocusLost

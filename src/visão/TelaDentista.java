@@ -310,9 +310,9 @@ public class TelaDentista extends javax.swing.JInternalFrame {
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
 
         try {
-            
+
             String id = tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString();
-            
+
             int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
             if (i == JOptionPane.YES_OPTION) {
                 medicDAO.Excluir(id);
@@ -360,7 +360,7 @@ public class TelaDentista extends javax.swing.JInternalFrame {
     private void btnCarregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarregarActionPerformed
         try {
             InformacaoAgendamento.txtIdDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 0).toString());
-            InformacaoAgendamento.txtIdDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 1).toString());
+                InformacaoAgendamento.txtDentista.setText(tableMedicos.getValueAt(tableMedicos.getSelectedRow(), 1).toString());
             dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Você deve selecionar um paciente");

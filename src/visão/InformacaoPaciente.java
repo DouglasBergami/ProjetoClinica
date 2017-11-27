@@ -1,4 +1,3 @@
-
 package visão;
 
 import java.text.SimpleDateFormat;
@@ -15,7 +14,6 @@ import DAO.PacienteDAO;
 import java.util.List;
 import Util.WebServiceCep;
 
-
 public class InformacaoPaciente extends javax.swing.JInternalFrame {
 
     int tratamento = 0;
@@ -24,49 +22,47 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
     ComboBoxStatusDAO comboStatus = new ComboBoxStatusDAO();
     private List<StatusDTO> lista;
     ValidarCpf validarcpf = new ValidarCpf();
-    
-  
+
     public InformacaoPaciente(int tratamento) {
-        initComponents();     
+        initComponents();
         lista = comboStatus.carregaCombo();
         DefaultComboBoxModel defaultComboBox = new DefaultComboBoxModel(lista.toArray());
         comboBoxStatus.setModel(defaultComboBox);
         txtIdade.setDocument(new FormataNumeros());
-        txtNumero.setDocument(new FormataNumeros()); 
+        txtNumero.setDocument(new FormataNumeros());
         this.tratamento = tratamento;
         txtId.setEnabled(false);
         comboBoxStatus.setEnabled(false);
     }
-    
-    public InformacaoPaciente(int tratamento, String id){
-        initComponents();
-        lista = comboStatus.carregaCombo();        
-        DefaultComboBoxModel defaultComboBox = new DefaultComboBoxModel(lista.toArray());
-        comboBoxStatus.setModel(defaultComboBox);       
-        txtIdade.setDocument(new FormataNumeros());
-        txtNumero.setDocument(new FormataNumeros());  
-        this.tratamento = tratamento;
- 
-         paciente.setCodigo((Integer.parseInt(id)));
-         pacienteDAO.selecionarPaciente(paciente);
-         txtId.setEditable(false);
-         txtId.setText(id);
-         txtIdade.setText(Integer.toString(paciente.getIdade()));
-         txtCPF.setText(Long.toString(paciente.getCpf()));
-         txtRua.setText(paciente.getRua());
-         txtBairro.setText(paciente.getBairro());
-         txtNumero.setText(Integer.toString(paciente.getNumero()));
-         txtCEP.setText(Long.toString(paciente.getCep()));
-         txtCidade.setText(id);
-         txtTelefone.setText(Long.toString(paciente.getTelefone()));
-         txtEmail.setText(paciente.getEmail());
-         comboBoxStatus.setSelectedIndex(comboStatus.encontraStatusPaciente(lista, paciente));  
-         txtNome.setText(paciente.getNome());
-         jDataNasci.setDate(paciente.getDatanasci());
-         comboBoxSexo.setSelectedItem(paciente.getSexo());
-        
-    }
 
+    public InformacaoPaciente(int tratamento, String id) {
+        initComponents();
+        lista = comboStatus.carregaCombo();
+        DefaultComboBoxModel defaultComboBox = new DefaultComboBoxModel(lista.toArray());
+        comboBoxStatus.setModel(defaultComboBox);
+        txtIdade.setDocument(new FormataNumeros());
+        txtNumero.setDocument(new FormataNumeros());
+        this.tratamento = tratamento;
+
+        paciente.setCodigo((Integer.parseInt(id)));
+        pacienteDAO.selecionarPaciente(paciente);
+        txtId.setEditable(false);
+        txtId.setText(id);
+        txtIdade.setText(Integer.toString(paciente.getIdade()));
+        txtCPF.setText(Long.toString(paciente.getCpf()));
+        txtRua.setText(paciente.getRua());
+        txtBairro.setText(paciente.getBairro());
+        txtNumero.setText(Integer.toString(paciente.getNumero()));
+        txtCEP.setText(Long.toString(paciente.getCep()));
+        txtCidade.setText(id);
+        txtTelefone.setText(Long.toString(paciente.getTelefone()));
+        txtEmail.setText(paciente.getEmail());
+        comboBoxStatus.setSelectedIndex(comboStatus.encontraStatusPaciente(lista, paciente));
+        txtNome.setText(paciente.getNome());
+        jDataNasci.setDate(paciente.getDatanasci());
+        comboBoxSexo.setSelectedItem(paciente.getSexo());
+
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -384,101 +380,95 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
         setSize(new java.awt.Dimension(870, 307));
     }// </editor-fold>//GEN-END:initComponents
 
-    public boolean validaCampos(){
-        
+    public boolean validaCampos() {
+
         boolean retorno = false;
-        
-        if(txtNome.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                txtNome.requestFocus();
-                //txtNome.setBackground(new java.awt.Color(102, 255, 102));
-           
-            }else if(comboBoxSexo.getSelectedIndex()==0) {
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    comboBoxSexo.requestFocus();                      
-                        } 
 
-                else if(txtCPF.getText().replace(".","").replace("/","").replace("-","").replace(" ","").isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtCPF.requestFocus();
-                    
-                }else if(txtIdade.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtIdade.requestFocus();
-                    
-                }else if(txtCEP.getText().replace("-","").replace(" ","").isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtCEP.requestFocus();
-                
-                }else if(txtRua.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtRua.requestFocus();
-                
-                }else if(txtBairro.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtBairro.requestFocus();
-                
-                }else if(txtNumero.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtNumero.requestFocus();
-                
-                }else if(txtCidade.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtCidade.requestFocus();
-                
-                }else if(txtCidade.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtCidade.requestFocus();
-                
-                }else if(jDataNasci.getDate()==null){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    jDataNasci.requestFocusInWindow();
-             
-                }else if(txtTelefone.getText().replace("(","").replace(")","").replace(" ","").replace("","").isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
-                    txtTelefone.requestFocus();
-                
-                }else{
-                    retorno = true;
-                }
-        
-        return retorno; 
+        if (txtNome.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtNome.requestFocus();
+            //txtNome.setBackground(new java.awt.Color(102, 255, 102));
+
+        } else if (comboBoxSexo.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            comboBoxSexo.requestFocus();
+        } else if (txtCPF.getText().replace(".", "").replace("/", "").replace("-", "").replace(" ", "").isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtCPF.requestFocus();
+
+        } else if (txtIdade.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtIdade.requestFocus();
+
+        } else if (txtCEP.getText().replace("-", "").replace(" ", "").isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtCEP.requestFocus();
+
+        } else if (txtRua.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtRua.requestFocus();
+
+        } else if (txtBairro.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtBairro.requestFocus();
+
+        } else if (txtNumero.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtNumero.requestFocus();
+
+        } else if (txtCidade.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtCidade.requestFocus();
+
+        } else if (jDataNasci.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            jDataNasci.requestFocusInWindow();
+
+        } else if (txtTelefone.getText().replace("(", "").replace(")", "").replace(" ", "").replace("", "").isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Campo obrigatorio para preencher");
+            txtTelefone.requestFocus();
+
+        } else {
+            retorno = true;
+        }
+
+        return retorno;
     }
-    
-    public void salvarDadosPacientes(){
-                paciente.setIdade((Integer.parseInt(txtIdade.getText())));
-                paciente.setSexo(comboBoxSexo.getSelectedItem().toString());
-                paciente.setCpf(Long.parseLong(txtCPF.getText().replace(".","").replace("/","").replace("-","")));
-                paciente.setRua(txtRua.getText());
-                paciente.setBairro(txtBairro.getText());
-                paciente.setNumero(Integer.parseInt(txtNumero.getText()));
-                paciente.setCep(Long.parseLong(txtCEP.getText().replace(".","").replace("/","").replace("-","")));
-                paciente.setCidade(txtCidade.getText());
-                paciente.setTelefone(Long.parseLong(txtTelefone.getText().replace("(","").replace(")","").replace(" ","")));
-                paciente.setEmail(txtEmail.getText());
-                paciente.setStatus(lista.get(comboBoxStatus.getSelectedIndex()).getId());
-                paciente.setNome(txtNome.getText());
-                Date data = jDataNasci.getDate();
-                SimpleDateFormat formato = new SimpleDateFormat("dd/mm/yyyy");
-                String dataFormatada = formato.format(data);    
-                paciente.setDataNasci(data);               
-        
+
+    public void salvarDadosPacientes() {
+        paciente.setIdade((Integer.parseInt(txtIdade.getText())));
+        paciente.setSexo(comboBoxSexo.getSelectedItem().toString());
+        paciente.setCpf(Long.parseLong(txtCPF.getText().replace(".", "").replace("/", "").replace("-", "")));
+        paciente.setRua(txtRua.getText());
+        paciente.setBairro(txtBairro.getText());
+        paciente.setNumero(Integer.parseInt(txtNumero.getText()));
+        paciente.setCep(Long.parseLong(txtCEP.getText().replace(".", "").replace("/", "").replace("-", "")));
+        paciente.setCidade(txtCidade.getText());
+        paciente.setTelefone(Long.parseLong(txtTelefone.getText().replace("(", "").replace(")", "").replace(" ", "")));
+        paciente.setEmail(txtEmail.getText());
+        paciente.setStatus(lista.get(comboBoxStatus.getSelectedIndex()).getId());
+        paciente.setNome(txtNome.getText());
+        Date data = jDataNasci.getDate();
+        SimpleDateFormat formato = new SimpleDateFormat("dd/mm/yyyy");
+        String dataFormatada = formato.format(data);
+        paciente.setDataNasci(data);
+
     }
-    
+
     private void txtCPFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCPFFocusLost
-        String cpf = ((txtCPF.getText().replace(".","").replace("/","").replace("-","").replace(" ","")));
+        String cpf = ((txtCPF.getText().replace(".", "").replace("/", "").replace("-", "").replace(" ", "")));
 
-        if(cpf.length()>0){
-            if (cpf.length()<11){
+        if (cpf.length() > 0) {
+            if (cpf.length() < 11) {
                 JOptionPane.showMessageDialog(null, "CPF incompleto");
                 txtCPF.setText("");
                 txtCPF.requestFocus();
 
-            }else{
+            } else {
 
                 boolean aprovacao = ValidarCpf.isValidCPF(cpf);
 
-                if(aprovacao == false){
+                if (aprovacao == false) {
                     JOptionPane.showMessageDialog(null, "CPF inválido");
                     txtCPF.setText("");
                     txtCPF.requestFocus();
@@ -492,10 +482,10 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCPFFocusLost
 
     private void txtTelefoneFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTelefoneFocusLost
-        String telefone = (txtTelefone.getText().replace("(","").replace(")","").replace(" ",""));
+        String telefone = (txtTelefone.getText().replace("(", "").replace(")", "").replace(" ", ""));
 
-        if(telefone.length()>0){
-            if (telefone.length()<10){
+        if (telefone.length() > 0) {
+            if (telefone.length() < 10) {
                 JOptionPane.showMessageDialog(null, "Informe o número completo de celular ou telefone");
                 txtTelefone.setText("");
                 txtTelefone.requestFocus();
@@ -504,10 +494,10 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtTelefoneFocusLost
 
     private void txtCEPFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCEPFocusLost
-        String cep = ((txtCEP.getText().replace(".","").replace("/","").replace("-","").replace(" ","")));
+        String cep = ((txtCEP.getText().replace(".", "").replace("/", "").replace("-", "").replace(" ", "")));
 
-        if(cep.length()>0){
-            if (cep.length()<8){
+        if (cep.length() > 0) {
+            if (cep.length() < 8) {
                 JOptionPane.showMessageDialog(null, "CEP incompleto");
                 txtCEP.setText("");
                 txtCEP.requestFocus();
@@ -521,13 +511,13 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        if(tratamento == 1){
-            if(validaCampos()==true){
+        if (tratamento == 1) {
+            if (validaCampos() == true) {
                 salvarDadosPacientes();
                 pacienteDAO.salvar(paciente);
             }
-        }else{
-            if(validaCampos()==true){
+        } else {
+            if (validaCampos() == true) {
                 salvarDadosPacientes();
                 pacienteDAO.editar(paciente);
 
@@ -537,7 +527,7 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-          
+
         WebServiceCep webServiceCep = WebServiceCep.searchCep(txtCEP.getText());
         //A ferramenta de busca ignora qualquer caracter que n?o seja n?mero.
 
@@ -551,7 +541,7 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
             //System.out.println("Logradouro: " + webServiceCep.getLogradouroFull());
             //System.out.println("Bairro: " + webServiceCep.getBairro());
             //System.out.println("Cidade: "
-                    //+ webServiceCep.getCidade() + "/" + webServiceCep.getUf());
+            //+ webServiceCep.getCidade() + "/" + webServiceCep.getUf());
 
             //caso haja problemas imprime as exce??es.
         } else {
@@ -559,7 +549,6 @@ public class InformacaoPaciente extends javax.swing.JInternalFrame {
 
             JOptionPane.showMessageDialog(null, "Descrição do erro: " + webServiceCep.getResultText());
         }
-    
 
 
     }//GEN-LAST:event_jButton1ActionPerformed

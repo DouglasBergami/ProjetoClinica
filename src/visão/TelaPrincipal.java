@@ -1,6 +1,8 @@
 package visão;
 
 import DAO.ConexaoBD;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JOptionPane;
 
 public class TelaPrincipal extends javax.swing.JFrame {
@@ -10,10 +12,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
     TelaPaciente pacientes = new TelaPaciente();
     EspecialidadeDentista especialidadeDentista = new EspecialidadeDentista();
     TelaAgendamento telaAgendamento = new TelaAgendamento();
+    Toolkit t = Toolkit.getDefaultToolkit();
+    Dimension d = t.getScreenSize();
+    int acertarTamanho = d.height-30;
+    int acertarPainel = d.height-230;
+    int acertarLabelBemVindo = acertarPainel+60;
 
     public TelaPrincipal(String login) {
         initComponents();
         conexao.conexao();
+        setSize(new java.awt.Dimension(1920, acertarTamanho));
+        jDesktopPaneMedicos.setSize(1920, acertarPainel);
+        jPanel1.setSize(1920, acertarPainel);
+        fundo.setSize(1920, acertarPainel);
+        lblBemVindo.setBounds(10, acertarLabelBemVindo, 150, 40);
         lblBemVindo.setText("Bem vindo: " + login);
     }
 
@@ -28,7 +40,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         jDesktopPaneMedicos = new javax.swing.JDesktopPane();
         jPanel1 = new javax.swing.JPanel();
-        painelBemVindo = new javax.swing.JPanel();
+        fundo = new javax.swing.JPanel();
         lblBemVindo = new javax.swing.JLabel();
         btnMedicos = new javax.swing.JButton();
         btnPacientes = new javax.swing.JButton();
@@ -46,7 +58,6 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Clinica");
-        setMaximumSize(new java.awt.Dimension(1293, 812));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -55,11 +66,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel1.setLayout(null);
 
-        painelBemVindo.setBackground(new java.awt.Color(255, 255, 255));
-        painelBemVindo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        painelBemVindo.setLayout(null);
-        jPanel1.add(painelBemVindo);
-        painelBemVindo.setBounds(0, 0, 1290, 650);
+        fundo.setBackground(new java.awt.Color(255, 255, 255));
+        fundo.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        fundo.setLayout(null);
+        jPanel1.add(fundo);
+        fundo.setBounds(0, 0, 1290, 650);
 
         jDesktopPaneMedicos.add(jPanel1);
         jPanel1.setBounds(0, 0, 1290, 650);
@@ -177,8 +188,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setSize(new java.awt.Dimension(1293, 812));
-        setLocationRelativeTo(null);
+        setBounds(0, 0, 1293, 812);
     }// </editor-fold>//GEN-END:initComponents
 
     private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
@@ -324,6 +334,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnAgenda;
     private javax.swing.JButton btnMedicos;
     private javax.swing.JButton btnPacientes;
+    private javax.swing.JPanel fundo;
     public static javax.swing.JDesktopPane jDesktopPaneMedicos;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
@@ -337,6 +348,5 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemUsuarios;
     private javax.swing.JMenu menuRelatorios;
     private javax.swing.JMenu menuSair;
-    private javax.swing.JPanel painelBemVindo;
     // End of variables declaration//GEN-END:variables
 }
