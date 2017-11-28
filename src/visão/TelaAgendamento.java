@@ -2,6 +2,7 @@ package visão;
 
 import DAO.AgendamentoDAO;
 import DAO.ComboBoxStatusDAO;
+import Util.FormataNumeros;
 import javax.swing.JOptionPane;
 import Util.Tabela;
 import com.toedter.calendar.JDateChooser;
@@ -40,6 +41,7 @@ public class TelaAgendamento extends javax.swing.JInternalFrame {
         comboBoxStatus.addItem("TODOS");
         comboStatus.setSelectedItem("TODOS");
         jRadioButtonDentista.setSelected(true);  
+        txtId.setDocument(new FormataNumeros());
 
         /*try {
 

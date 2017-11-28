@@ -109,8 +109,7 @@ public class AgendamentoDAO {
     }
 
     public Tabela listarAgendamentos(String codigo, String nome, int status, boolean pessoa, String data) {
-        
-        
+
         ArrayList dados = new ArrayList();
         String[] colunas = new String[]{"Agendamento Nº", "Codigo", "nome", "data", "hora", "servico"};
 
@@ -172,6 +171,22 @@ public class AgendamentoDAO {
                 sql += " and agendamento.data = '" + data + "'";
             } else {
                 sql += " where agendamento.data = '" + data + "'";
+                valida = true;
+            }
+        }
+
+        if (status == 0) {
+            if (valida) {
+                sql += " and agendamento.id_status";
+            } else {
+                sql += " where agendamento.id_status";
+                valida = true;
+            }
+        } else {
+            if (valida) {
+                sql += " and agendamento.id_status = " + status;
+            } else {
+                sql += " where agendamento.id_status = " + status;
                 valida = true;
             }
         }

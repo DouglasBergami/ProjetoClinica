@@ -9,8 +9,14 @@ import DAO.ComboBoxStatusDAO;
 import DAO.DentistaDAO;
 import DAO.PacienteDAO;
 import com.toedter.calendar.JDateChooser;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import modeloDTO.StatusDTO;
 
 public class InformacaoAgendamento extends javax.swing.JInternalFrame {
@@ -35,6 +41,13 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         jComboBoxStatus.setEnabled(false);
         txtDentista.setEditable(false);
         txtPaciente.setEditable(false);
+        
+        Calendar tempo = Calendar.getInstance();
+        tempo.set(Calendar.YEAR, 2017);
+        tempo.set(Calendar.MONTH, 10);
+        tempo.set(Calendar.DATE, 28);
+
+        jDataAgendamento.setMinSelectableDate(tempo.getTime());
 
         listaStatus = comboBoxStatusDAO.carregaCombo();
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(listaStatus.toArray());
@@ -170,6 +183,11 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        txtHora.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtHoraFocusLost(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel5.setText("Procedimento");
@@ -424,6 +442,41 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
     private void txtIdDentistaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIdDentistaFocusLost
         consultaNomeDentista();
     }//GEN-LAST:event_txtIdDentistaFocusLost
+
+    private void txtHoraFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtHoraFocusLost
+        String hora = "";
+        int hora1 = 0;
+        int hora2 = 0;
+
+        hora = txtHora.getText().replace(":", "").replace(" ", "");
+
+        if (!hora.equals("")) {
+
+            try {
+                hora1 = (Integer.parseInt(hora.substring(0, 2)));
+                hora2 = (Integer.parseInt(hora.substring(2, 4)));
+
+                if (hora1 >= 0 && hora1 <= 23) {
+                    if (hora2 >= 0 && hora2 <= 59) {
+
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "hora inválida");
+                    txtHora.requestFocus();
+                }
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Hora incompleta");
+                txtHora.setText(hora);
+                txtHora.requestFocus();
+                
+            }
+        } else {
+            
+        }
+
+    }//GEN-LAST:event_txtHoraFocusLost
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

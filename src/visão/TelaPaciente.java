@@ -1,4 +1,3 @@
-
 package visão;
 
 import DAO.ComboBoxStatusDAO;
@@ -10,21 +9,14 @@ import DAO.PacienteDAO;
 import Util.FormataNumeros;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import modeloDTO.StatusDTO;
 
-
-
-
 public class TelaPaciente extends javax.swing.JInternalFrame {
-    
+
     PacienteDTO paciente = new PacienteDTO();
     PacienteDAO pacienteDAO = new PacienteDAO();
     int tratamento = 0;
@@ -42,7 +34,7 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
         comboBoxStatus.addItem("TODOS");
         comboBoxStatus.setSelectedItem("TODOS");
     }
-    
+
     public TelaPaciente(int pesquisar) {
         this.pesquisar = pesquisar;
         initComponents();
@@ -54,7 +46,6 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
         comboBoxStatus.setSelectedItem("TODOS");
     }
 
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -291,17 +282,13 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnNovoActionPerformed
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-   
+
         String codigo = txtId.getText().equals("") ? null : txtId.getText();
         String nome = txtNome.getText().equals("") ? null : txtNome.getText();
         int ativo = comboBoxStatus.getSelectedItem().equals("TODOS") ? 0 : listaStatus.get(comboBoxStatus.getSelectedIndex()).getId();
 
-        //Tabela tabela =  TabelaDAO.listarPacientes("select paciente.id, paciente.nome, status.nome from paciente inner JOIN status on paciente.id_status = status.id where paciente.nome like'%"+txtNome.getText()+"%' order by id");
-
         Tabela tabela = pacienteDAO.listarPacientes(codigo, nome, ativo);
-        
-        
-        
+
         tablePacientes.setModel(tabela);
         tablePacientes.getColumnModel().getColumn(0).setPreferredWidth(50);
         tablePacientes.getColumnModel().getColumn(0).setResizable(false);
@@ -313,37 +300,35 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
         tablePacientes.getColumnModel().getColumn(3).setResizable(false);
         tablePacientes.setAutoResizeMode(tablePacientes.AUTO_RESIZE_OFF);
         tablePacientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
         Action actionSelecao = new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                
+
                 JOptionPane.showMessageDialog(null, "teste");
-                
+
             }
         };
-  
+
         ButtonColumn buttonColumnSelecao = new ButtonColumn(tablePacientes, actionSelecao, 3);
-        buttonColumnSelecao.setMnemonic(KeyEvent.VK_D);
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
 
-        try{
+        try {
             String id = (tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString());
-            
+
             int i = JOptionPane.showConfirmDialog(null, "Deseja realmente excluir?  ", "Excluir", JOptionPane.YES_NO_OPTION);
-            if(i==JOptionPane.YES_OPTION){
+            if (i == JOptionPane.YES_OPTION) {
 
-            pacienteDAO.excluir(id);
+                pacienteDAO.excluir(id);
 
-        }
-            
-        }catch(Exception e){
+            }
+
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Nenhum item selecionado");
         }
-        
-        
+
 
     }//GEN-LAST:event_btnExcluirActionPerformed
 
@@ -352,7 +337,7 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
 
         String id = tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString();
 
-        InformacaoPaciente informacaoPaciente = new InformacaoPaciente (tratamento, id);
+        InformacaoPaciente informacaoPaciente = new InformacaoPaciente(tratamento, id);
         TelaPrincipal.jDesktopPaneMedicos.add(informacaoPaciente);
         informacaoPaciente.setVisible(true);
     }//GEN-LAST:event_btnEditarActionPerformed
@@ -363,23 +348,19 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
 
     private void tablePacientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePacientesMouseClicked
 
-        if (evt.getClickCount()==2){
-            
-            if(pesquisar==0){
-                
-           
-            
-            tratamento = 2;
+        if (evt.getClickCount() == 2) {
 
-            String id = tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString();
-            
-            
+            if (pesquisar == 0) {
 
-            InformacaoPaciente informacaoPaciente = new InformacaoPaciente (tratamento, id);
-            TelaPrincipal.jDesktopPaneMedicos.add(informacaoPaciente);
-            informacaoPaciente.setVisible(true);
-            
-             }else{
+                tratamento = 2;
+
+                String id = tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString();
+
+                InformacaoPaciente informacaoPaciente = new InformacaoPaciente(tratamento, id);
+                TelaPrincipal.jDesktopPaneMedicos.add(informacaoPaciente);
+                informacaoPaciente.setVisible(true);
+
+            } else {
                 InformacaoAgendamento.txtIdPaciente.setText(tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString());
                 InformacaoAgendamento.txtPaciente.setText(tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 1).toString());
                 dispose();
@@ -389,15 +370,15 @@ public class TelaPaciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tablePacientesMouseClicked
 
     private void btnCarregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarregarActionPerformed
-   
-                try{
-                InformacaoAgendamento.txtIdPaciente.setText(tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString());
-                InformacaoAgendamento.txtPaciente.setText(tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 1).toString());
-                dispose();
-                 }catch(Exception ex){
-                     JOptionPane.showMessageDialog(null, "Você deve selecionar um paciente");
-                 }
-                 
+
+        try {
+            InformacaoAgendamento.txtIdPaciente.setText(tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 0).toString());
+            InformacaoAgendamento.txtPaciente.setText(tablePacientes.getValueAt(tablePacientes.getSelectedRow(), 1).toString());
+            dispose();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Você deve selecionar um paciente");
+        }
+
     }//GEN-LAST:event_btnCarregarActionPerformed
 
 
