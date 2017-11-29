@@ -65,7 +65,7 @@ public class DentistaDAO {
             pst.execute();
             JOptionPane.showMessageDialog(null, "Dados alterado com sucesso");
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro para editar dados\n" + ex);
+            JOptionPane.showMessageDialog(null, "Erro para editar dados\n");
         }
 
         conex.desconeca();
@@ -81,7 +81,7 @@ public class DentistaDAO {
             JOptionPane.showMessageDialog(null, "Medico excluido com sucesso");
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Não foi possivel excluir \n" + ex);
+            JOptionPane.showMessageDialog(null, "Não foi possivel excluir \n");
         }
 
         conex.desconeca();
@@ -112,7 +112,7 @@ public class DentistaDAO {
             mod.setNome(conex.rs.getString("nome"));
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro para encontrar o medico selecionado" + ex);
+            JOptionPane.showMessageDialog(null, "Erro para encontrar o medico selecionado");
         }
         conex.desconeca();
         return mod;

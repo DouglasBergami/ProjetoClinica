@@ -8,13 +8,18 @@ import DAO.AgendamentoDAO;
 import DAO.ComboBoxStatusDAO;
 import DAO.DentistaDAO;
 import DAO.PacienteDAO;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date;
 import com.toedter.calendar.JDateChooser;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import modeloDTO.StatusDTO;
@@ -32,6 +37,14 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
     int pesquisar = 0;
     private List<StatusDTO> listaStatus;
 
+    Calendar tempo = Calendar.getInstance();
+    int day = tempo.get(Calendar.DATE);
+    int month = tempo.get(Calendar.MONTH);
+    int year = tempo.get(Calendar.YEAR);
+    
+    String dataAtual = day+"/"+(month+1)+"/"+year;
+    DateFormat dateFormat = new SimpleDateFormat("dd/mm/yyyy");
+
     public InformacaoAgendamento(int tratamento) {
         initComponents();
         this.tratamento = tratamento;
@@ -41,11 +54,10 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         jComboBoxStatus.setEnabled(false);
         txtDentista.setEditable(false);
         txtPaciente.setEditable(false);
-        
-        Calendar tempo = Calendar.getInstance();
-        tempo.set(Calendar.YEAR, 2017);
-        tempo.set(Calendar.MONTH, 10);
-        tempo.set(Calendar.DATE, 28);
+
+        tempo.set(Calendar.YEAR, year);
+        tempo.set(Calendar.MONTH, month);
+        tempo.set(Calendar.DATE, day);
 
         jDataAgendamento.setMinSelectableDate(tempo.getTime());
 
@@ -65,6 +77,12 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         jComboBoxStatus.setEnabled(true);
         txtDentista.setEditable(false);
         txtPaciente.setEditable(false);
+        
+        tempo.set(Calendar.YEAR, year);
+        tempo.set(Calendar.MONTH, month);
+        tempo.set(Calendar.DATE, day);
+
+        jDataAgendamento.setMinSelectableDate(tempo.getTime());
 
         listaStatus = comboBoxStatusDAO.carregaCombo();
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel(listaStatus.toArray());
@@ -155,8 +173,11 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(txtPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 50, 124, -1));
 
         jLabel1.setText("Paciente");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, -1, -1));
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisar.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -164,8 +185,11 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
                 jButton1ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 40, 30, 30));
 
         jLabel2.setText("Dentista");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, -1, -1));
+        jPanel1.add(txtDentista, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 125, -1));
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/pesquisar.png"))); // NOI18N
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -173,10 +197,14 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
                 jButton3ActionPerformed(evt);
             }
         });
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, 30, 30));
 
         jLabel3.setText("Data");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 130, -1, -1));
 
         jLabel4.setText("Hora");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 170, -1, -1));
+        jPanel1.add(jDataAgendamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 130, 184, -1));
 
         try {
             txtHora.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##:##")));
@@ -188,141 +216,41 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
                 txtHoraFocusLost(evt);
             }
         });
+        jPanel1.add(txtHora, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 170, 97, -1));
+        jPanel1.add(txtServico, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 253, 561, 183));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel5.setText("Procedimento");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(149, 206, 242, -1));
 
         jLabel6.setText("Codigo Dent");
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
 
         jLabel7.setText("Codigo Pac");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
         txtIdPaciente.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtIdPacienteFocusLost(evt);
             }
         });
+        jPanel1.add(txtIdPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 50, -1));
 
         txtIdDentista.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtIdDentistaFocusLost(evt);
             }
         });
+        jPanel1.add(txtIdDentista, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 50, -1));
 
         jLabel9.setText("Agendamento");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 16, -1, -1));
+        jPanel1.add(txtIdAgendamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 13, 50, -1));
 
         jLabel10.setText("Status");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, -1, -1));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtIdDentista, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel2)
-                                .addGap(10, 10, 10)
-                                .addComponent(txtDentista, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(5, 5, 5)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(147, 147, 147)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(17, 17, 17)
-                                        .addComponent(jDataAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addGap(17, 17, 17)
-                                        .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtIdAgendamento))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addGap(19, 19, 19)
-                                        .addComponent(txtIdPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(5, 5, 5)
-                                        .addComponent(txtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel10)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jComboBoxStatus, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txtServico)))
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtIdAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jComboBoxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(txtPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtIdPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(6, 6, 6))
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel6))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel2)
-                                        .addComponent(txtIdDentista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txtDentista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel3))
-                    .addComponent(jDataAgendamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(txtHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addComponent(txtServico, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        jPanel1.add(jComboBoxStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 10, 124, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -365,15 +293,65 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
         agendamento.setPacienteDTO(paciente);
 
     }
+
+    private boolean validacao() {
+        boolean validar = true;
+        
+        Date dataAualConvertida = null;
+        
+        /*try {
+            dataAualConvertida = (Date)dateFormat.parse("2017/11/29");
+            JOptionPane.showMessageDialog(null, dataAualConvertida);
+        } catch (ParseException ex) {
+            JOptionPane.showMessageDialog(null, "Não foi possivel converter a data atual");
+        }*/
+
+        if (txtIdDentista.getText().equals("") || txtIdDentista.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Favor informar o dentista");
+            validar = false;
+            txtIdDentista.requestFocus();
+            
+        } else if (txtIdPaciente.getText().equals("") || txtIdPaciente.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Favor informar o paciente");
+            validar = false;        
+            txtIdPaciente.requestFocus();
+            
+        } else if (jDataAgendamento.getDate() == null /*|| jDataAgendamento.getDate().before(dataAualConvertida)==true*/) {
+            JOptionPane.showMessageDialog(null, "Favor informar a data do agendamento");
+            validar = false;
+            jDataAgendamento.requestFocusInWindow();
+            
+        }else if(txtHora.equals("") || txtHora.getText().replace(" ", "").replace(":", "").isEmpty()){
+            JOptionPane.showMessageDialog(null, "Favor informar o horario do agendamento");
+            validar = false;
+            txtHora.requestFocus();
+            
+        }else if(txtServico.equals("") || txtServico.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Favor informar o procedimento / serviço");
+            validar = false; 
+            txtServico.requestFocus();
+            
+        }else{
+            validar = true;
+        }
+
+        return validar;
+    }
+
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         if (tratamento == 1) {
-            salvarDadosAgendamento();
-            agendamentoDAO.salvar(agendamento);
+            if(validacao()){
+                salvarDadosAgendamento();
+                agendamentoDAO.salvar(agendamento); 
+            }
 
         } else {
-
-            salvarDadosAgendamento();
-            agendamentoDAO.editar(agendamento);
+            
+            if(validacao()){
+                salvarDadosAgendamento();
+                agendamentoDAO.editar(agendamento);
+            }
+            
 
         }
 
@@ -470,10 +448,10 @@ public class InformacaoAgendamento extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "Hora incompleta");
                 txtHora.setText(hora);
                 txtHora.requestFocus();
-                
+
             }
         } else {
-            
+
         }
 
     }//GEN-LAST:event_txtHoraFocusLost
